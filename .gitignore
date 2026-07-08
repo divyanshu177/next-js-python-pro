@@ -1,0 +1,33 @@
+# Environment variables (Crucial for security)
+.env
+.env.*
+
+# Python
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.cache/
+
+# Node / Next.js
+node_modules/
+.next/
+dist/
+build/
+out/
+.docusaurus/
+.pnpm-store/
+.yarn/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.eslintcache
+
+# Local Database & uploads
+*.db
+*.db-journal
+backend_uploads/
+.system_generated/

@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  db:
+    image: mongo:latest
+    container_name: medconnect_mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: medconnect_backend
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - MONGO_URI=mongodb://db:27017
+      - MONGO_DB=medconnect
+      - JWT_SECRET=medconnect_super_secret_key_change_me_in_production_12345!
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    volumes:
+      - backend_uploads:/app/backend_uploads
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: medconnect_frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000/api
+    depends_on:
+      - backend
+
+volumes:
+  mongo_data:
+  backend_uploads:
